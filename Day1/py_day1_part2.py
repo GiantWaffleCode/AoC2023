@@ -44,6 +44,7 @@ num_dict = {
     '9'       : '9'
 }
 
+
 total= 0
 
 for ex in data:
