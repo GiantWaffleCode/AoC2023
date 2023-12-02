@@ -6,7 +6,7 @@
 # -----------------------
 
 
-
+use_real_data = True
 
 data = []
 
@@ -23,10 +23,16 @@ example = [
     'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green'
 ]
 
+if use_real_data:
+    test_input = data
+else:
+    test_input = example
+
+
 game_data = []
 
     #switch example to data for proper input
-for item in data:
+for item in test_input:
     #[Pull ID, R, G, B]
     game = item.split(': ', 1)[1].split('; ')
     result = []
