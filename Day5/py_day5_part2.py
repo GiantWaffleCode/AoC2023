@@ -124,15 +124,32 @@ def seedToLoc(seed):
 
 lowest_loc = None
 
-for i in range(len(seeds)//2):
+r = open('Day5\\results.txt', 'r+')
+
+lines = r.readlines()
+total_ranges_complete = len(lines)
+#print(lines)
+
+for i in range(total_ranges_complete, len(seeds)//2):
+
+    print(f'Cycle {i+1} of {len(seeds)//2}')
     seed_start = seeds[i*2]
     seed_len = seeds[i*2+1]
     #print(f'{seed_start=} and {seed_len=}')
     for seed_num in range(seed_start, seed_start+seed_len-1):
+        if seed_num % 1000000 == 0:
+            perc = ((seed_num-seed_start) / seed_len) * 100
+            print(f'Progress: {perc:3.2f}%')
         result = seedToLoc(seed_num)
         if lowest_loc is None or result < lowest_loc:
             lowest_loc = result
+    
+    r.write(f'Range {i+1} - Lowest Location: {lowest_loc}\n')
+    r.flush()
+    lowest_loc = None
 
-        #print(f'Seed {seed_num} Location is {result}')
+    #print(f'Seed {seed_num} Location is {result}')
 
-print(f'Lowest Location is: {lowest_loc}')
+r.close()
+
+#print(f'Lowest Location is: {lowest_loc}')

@@ -1,0 +1,4 @@
+Range 1 - Lowest Location: 554772016
+Range 2 - Lowest Location: 289863851
+Range 3 - Lowest Location: 2036266413
+Range 4 - Lowest Location: 60568880
