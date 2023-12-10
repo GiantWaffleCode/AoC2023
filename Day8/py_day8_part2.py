@@ -2,7 +2,7 @@
 #   Advent of Code 2023
 #      GiantWaffle
 #   Challenge 8 of 25
-#      Part 1 of 2
+#      Part 2 of 2
 # -----------------------
 
 import math
@@ -88,9 +88,6 @@ for node in starting_nodes:
 
 lcm = math.lcm(*loop_lens)
 
-
-
 print(starting_nodes)
 print(loop_lens)
 print(lcm)
-
