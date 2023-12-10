@@ -182,9 +182,6 @@ while not ((current_cell.x == starting_location[0]) and (current_cell.y == start
     steps += 1
     #print(count)
 
-    if steps == 6640:
-        current_cell.fillPipe('orange')
-
     #Look North
     if (current_cell.y-1 > 0) and (current_cell.direction in ['|', 'J', 'L']):
         #print('Looking North')
