@@ -4,8 +4,6 @@
 #      Part 2 of 2
 # -----------------------
 
-import tqdm
-
 use_real_data = True
 
 data = []
@@ -28,66 +26,67 @@ example = [
     '#...#.....'
 ]
 
-expanded_map = []
-
 if use_real_data:
     test_input = data
 else:
     test_input = example
 
-expansion_value = 1000000
+multi = 1000000
+expansion_value = multi-1
 
-for line in test_input:
-    expanded_map.append(line)
-    if not '#' in line:
-        for k in range(expansion_value-1):
-            expanded_map.append(line)
+no_galaxy = [[],[]]
 
+for x in range(len(test_input[0])): #init list for x
+    no_galaxy[0].append(True)
 
-no_galaxy = []
-
-for i in range(len(test_input[0])):
-    no_galaxy.append(True)
+for y in range(len(test_input)):
+    no_galaxy[1].append(True)
 
 for y, line in enumerate(test_input):
     for x, cell in enumerate(line):
         if cell == '#':
-            no_galaxy[x] = False
+            no_galaxy[0][x] = False
 
-final_map = []
-
-for line in tqdm.tqdm(expanded_map):
-    expansions = 0
-    new_line = []
-    for point in range(len(no_galaxy)):
-        new_line.append(line[point])
-        if no_galaxy[point]:
-            for k in range(expansion_value-1):
-                new_line.append('.')
-                expansions += 1
-    mod = ''.join(new_line)
-    final_map.append(mod)
-
-# for line in expanded_map:
-#     print(line)
+for y, line in enumerate(test_input):
+    if '#' in line:
+        no_galaxy[1][y] = False
 
 def calcCartDist(cord1,cord2):
     return abs(cord2[0]-cord1[0]) + abs(cord2[1]-cord1[1])
 
-
 galaxies = []
 
-for y, line in enumerate(final_map):
+for y, line in enumerate(test_input):
     for x, cell in enumerate(line):
         if cell == '#':
-            galaxies.append((x,y))
+            galaxies.append([x,y])
+
+# print(galaxies)
+
+expanded_galaxies = []
+
+x_expansions = 0
+for x, x_check in enumerate(no_galaxy[0]):
+    if x_check:
+        for cord in galaxies:
+            if cord[0] > x+(x_expansions*expansion_value):
+                cord[0] += expansion_value
+        x_expansions += 1
+
+y_expansions = 0
+for y, y_check in enumerate(no_galaxy[1]):
+    if y_check:
+        for cord in galaxies:
+            if cord[1] > y+(y_expansions*expansion_value):
+                cord[1] += expansion_value
+        y_expansions += 1
 
 dist_sum = 0
-#print(galaxies)
+
 for i in range(len(galaxies)):
     for gal_num, galaxy in enumerate(galaxies):
         if i != gal_num:
             dist = calcCartDist(galaxies[i], galaxy)
             dist_sum += dist
 
-print(f'Part 1 Answer: {dist_sum/2}')
+print(f'Part 2 Answer: {dist_sum/2}')
