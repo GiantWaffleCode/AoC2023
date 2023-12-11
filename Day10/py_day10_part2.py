@@ -20,7 +20,7 @@ with open('Day10\data_day10.txt') as f:
 example = [
     '.....',
     '.F-7.',
-    '.|.|.',
+    '.|S|.',
     '.L-J.',
     '.....'
 ]
@@ -45,69 +45,27 @@ class Node:
 
         self.drawPipe()
 
-    def drawHorLine(self, canvas, x, y, fill):
+    def drawHorLine(self, canvas, x, y):
         canvas.create_line(7*x+2, 7*y+3, 7*x+9, 7*y+3)
-        canvas.create_line(7*x+2, 7*y+7, 7*x+9, 7*y+7)
-        if fill:
-            canvas.create_line(7*x+2, 7*y+4, 7*x+9, 7*y+4, fill=fill)
-            canvas.create_line(7*x+2, 7*y+5, 7*x+9, 7*y+5, fill=fill)
-            canvas.create_line(7*x+2, 7*y+6, 7*x+9, 7*y+6, fill=fill)
 
-    def drawVertLine(self, canvas, x, y, fill):
+    def drawVertLine(self, canvas, x, y):
         canvas.create_line(7*x+3, 7*y+2, 7*x+3, 7*y+9)
-        canvas.create_line(7*x+7, 7*y+2, 7*x+7, 7*y+9)
-        if fill:
-            canvas.create_line(7*x+4, 7*y+2, 7*x+4, 7*y+9, fill=fill)
-            canvas.create_line(7*x+5, 7*y+2, 7*x+5, 7*y+9, fill=fill)
-            canvas.create_line(7*x+6, 7*y+2, 7*x+6, 7*y+9, fill=fill)
 
-    def drawNELine(self, canvas, x, y, fill):
-        canvas.create_line(7*x+3, 7*y+2, 7*x+3, 7*y+8)
-        canvas.create_line(7*x+3, 7*y+7, 7*x+9, 7*y+7)
-        canvas.create_line(7*x+7, 7*y+2, 7*x+7, 7*y+4)
-        canvas.create_line(7*x+7, 7*y+3, 7*x+9, 7*y+3)
-        if fill:
-            canvas.create_line(7*x+4, 7*y+4, 7*x+9, 7*y+4, fill=fill)
-            canvas.create_line(7*x+4, 7*y+5, 7*x+9, 7*y+5, fill=fill)
-            canvas.create_line(7*x+4, 7*y+6, 7*x+9, 7*y+6, fill=fill)
-            canvas.create_line(7*x+4, 7*y+2, 7*x+7, 7*y+2, fill=fill)
-            canvas.create_line(7*x+4, 7*y+3, 7*x+7, 7*y+3, fill=fill)
+    def drawNELine(self, canvas, x, y):
+        canvas.create_line(7*x+3, 7*y+3, 7*x+9, 7*y+3)
+        canvas.create_line(7*x+3, 7*y+2, 7*x+3, 7*y+4)
 
-    def drawSELine(self, canvas, x, y, fill):
+    def drawSELine(self, canvas, x, y):
         canvas.create_line(7*x+3, 7*y+3, 7*x+9, 7*y+3)
         canvas.create_line(7*x+3, 7*y+3, 7*x+3, 7*y+9)
-        canvas.create_line(7*x+7, 7*y+7, 7*x+9, 7*y+7)
-        canvas.create_line(7*x+7, 7*y+7, 7*x+7, 7*y+9)
-        if fill:
-            canvas.create_line(7*x+4, 7*y+4, 7*x+9, 7*y+4, fill=fill)
-            canvas.create_line(7*x+4, 7*y+5, 7*x+9, 7*y+5, fill=fill)
-            canvas.create_line(7*x+4, 7*y+6, 7*x+9, 7*y+6, fill=fill)
-            canvas.create_line(7*x+4, 7*y+7, 7*x+7, 7*y+7, fill=fill)
-            canvas.create_line(7*x+4, 7*y+8, 7*x+7, 7*y+8, fill=fill)
 
-    def drawNWLine(self, canvas, x, y, fill):
+    def drawNWLine(self, canvas, x, y):
         canvas.create_line(7*x+2, 7*y+3, 7*x+4, 7*y+3)
         canvas.create_line(7*x+3, 7*y+2, 7*x+3, 7*y+4)
-        canvas.create_line(7*x+7, 7*y+2, 7*x+7, 7*y+7)
-        canvas.create_line(7*x+2, 7*y+7, 7*x+8, 7*y+7)
-        if fill:
-            canvas.create_line(7*x+2, 7*y+4, 7*x+7, 7*y+4, fill=fill)
-            canvas.create_line(7*x+2, 7*y+5, 7*x+7, 7*y+5, fill=fill)
-            canvas.create_line(7*x+2, 7*y+6, 7*x+7, 7*y+6, fill=fill)
-            canvas.create_line(7*x+4, 7*y+2, 7*x+7, 7*y+2, fill=fill)
-            canvas.create_line(7*x+4, 7*y+3, 7*x+7, 7*y+3, fill=fill)
 
-    def drawSWLine(self, canvas, x, y, fill):
-        canvas.create_line(7*x+2, 7*y+3, 7*x+7, 7*y+3)
-        canvas.create_line(7*x+7, 7*y+3, 7*x+7, 7*y+9)
-        canvas.create_line(7*x+2, 7*y+7, 7*x+4, 7*y+7)
-        canvas.create_line(7*x+3, 7*y+7, 7*x+3, 7*y+9)
-        if fill:
-            canvas.create_line(7*x+2, 7*y+4, 7*x+7, 7*y+4, fill=fill)
-            canvas.create_line(7*x+2, 7*y+5, 7*x+7, 7*y+5, fill=fill)
-            canvas.create_line(7*x+2, 7*y+6, 7*x+7, 7*y+6, fill=fill)
-            canvas.create_line(7*x+4, 7*y+7, 7*x+7, 7*y+7, fill=fill)
-            canvas.create_line(7*x+4, 7*y+8, 7*x+7, 7*y+8, fill=fill)
+    def drawSWLine(self, canvas, x, y):
+        canvas.create_line(7*x+2, 7*y+3, 7*x+4, 7*y+3)
+        canvas.create_line(7*x+3, 7*y+3, 7*x+3, 7*y+9)
 
     def drawBlank(self, canvas, x, y, fill):
         canvas.create_line(7*x+2, 7*y+2, 7*x+9, 7*y+2, fill=fill)
@@ -123,17 +81,17 @@ class Node:
     def drawPipe(self):
         match self.direction:
             case '|':
-                self.drawVertLine(my_canvas, self.x, self.y, self.fill)
+                self.drawVertLine(my_canvas, self.x, self.y)
             case '-':
-                self.drawHorLine(my_canvas, self.x, self.y, self.fill)
+                self.drawHorLine(my_canvas, self.x, self.y)
             case 'L':
-                self.drawNELine(my_canvas, self.x, self.y, self.fill)
+                self.drawNELine(my_canvas, self.x, self.y)
             case 'J':
-                self.drawNWLine(my_canvas, self.x, self.y, self.fill)
+                self.drawNWLine(my_canvas, self.x, self.y)
             case '7':
-                self.drawSWLine(my_canvas, self.x, self.y, self.fill)
+                self.drawSWLine(my_canvas, self.x, self.y)
             case 'F':
-                self.drawSELine(my_canvas, self.x, self.y, self.fill)
+                self.drawSELine(my_canvas, self.x, self.y)
 
     def fillPipe(self, color):
         self.fill = color
@@ -340,11 +298,17 @@ def raycastOutDiag(x, y):
 def isRaycastOdd(raycast):
     isOdd = [False, False, False, False]
 
-    for i, cast in enumerate(raycast):
-        half = cast / 2
-        if (cast != 2) and (half % 2 != 0):
-            isOdd[i] = True
+    if 0 in raycast:
+        return False
 
+    for i, cast in enumerate(raycast):
+        if cast == 1:
+            isOdd[i] = True
+        elif cast % 2 != 0:
+            isOdd[i] = True
+        else:
+            isOdd[i] = False
+        
     return all(isOdd)
 
 
@@ -352,7 +316,7 @@ def isRaycastOdd(raycast):
 for y, node_line in enumerate(nodes):
     for x, cell in enumerate(node_line):
         if not cell.visited:
-            raycast = raycastOutDiag(x, y)
+            raycast = raycastOut(x, y)
             print(f'Pixel: ({x},{y}) -> Raycast: {raycast}')
             if isRaycastOdd(raycast):
                 print('Inside Cell Found')
