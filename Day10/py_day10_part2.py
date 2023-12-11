@@ -337,7 +337,3 @@ for node_line in nodes:
 print(f'Part 2 Answer: {inside_count}')
 
 root.mainloop()
-
-
-
-
