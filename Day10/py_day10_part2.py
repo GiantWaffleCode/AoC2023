@@ -1,10 +1,12 @@
 #   Advent of Code 2023
 #      GiantWaffle
 #   Challenge 10 of 25
-#      Part 1 of 2
+#      Part 2 of 2
 # -----------------------
 
 from tkinter import *
+from PIL import ImageGrab, Image
+import os.path
 
 use_real_data = True
 
@@ -36,6 +38,7 @@ class Node:
         self.direction = direction
         self.fill = fill
         self.visited = False
+        self.inside = False
 
         self.conn_fwd = Node
         self.conn_bwd = Node
@@ -105,6 +108,16 @@ class Node:
             canvas.create_line(7*x+2, 7*y+6, 7*x+7, 7*y+6, fill=fill)
             canvas.create_line(7*x+4, 7*y+7, 7*x+7, 7*y+7, fill=fill)
             canvas.create_line(7*x+4, 7*y+8, 7*x+7, 7*y+8, fill=fill)
+
+    def drawBlank(self, canvas, x, y, fill):
+        canvas.create_line(7*x+2, 7*y+2, 7*x+9, 7*y+2, fill=fill)
+        canvas.create_line(7*x+2, 7*y+3, 7*x+9, 7*y+3, fill=fill)
+        canvas.create_line(7*x+2, 7*y+4, 7*x+9, 7*y+4, fill=fill)
+        canvas.create_line(7*x+2, 7*y+5, 7*x+9, 7*y+5, fill=fill)
+        canvas.create_line(7*x+2, 7*y+6, 7*x+9, 7*y+6, fill=fill)
+        canvas.create_line(7*x+2, 7*y+7, 7*x+9, 7*y+7, fill=fill)
+        canvas.create_line(7*x+2, 7*y+8, 7*x+9, 7*y+8, fill=fill)
+        canvas.create_line(7*x+5, 7*y+5, 7*x+6, 7*y+6, fill='red')
 
 
     def drawPipe(self):
@@ -229,7 +242,138 @@ while not ((current_cell.x == starting_location[0]) and (current_cell.y == start
 
 print(f'Part 1 Answer: {(steps+1)/2}')
 
+def get_color(image, cord):
+    return image.getpixel((cord[0], cord[1]))
+
+def getter(widget):
+    x=root.winfo_rootx()+widget.winfo_x()
+    y=root.winfo_rooty()+widget.winfo_y()
+    x1=x+widget.winfo_width()
+    y1=y+widget.winfo_height()
+    image = ImageGrab.grab().crop((x+2,y+2,x1-2,y1-2))
+    image.show()
+    image.save('Day10/pipes.png')
+
+if os.path.exists('Day10/pipes.png'):
+    pipes = Image.open(r"Day10/pipes.png")
+    pixel_map = pipes.load()
+else:
+    screenshot = root.after(2000, lambda: getter(my_canvas))
+
+
+#go line by line
+#if cell is visited already exclude it
+#if cell has not been visited
+#raycast from center to edge in all 4 directions
+#if black pixels 
+
+#generate blank map
+for node_line in nodes:
+    for cell in node_line:
+        if not cell.visited:
+            cell.drawBlank(my_canvas, cell.x, cell.y, 'grey')
+        
+def raycastOut(x, y):
+    total = [0,0,0,0] #[U D L R]
+    px_cord = [7*x+3, 7*y+3]
+    width, height = pipes.size
+
+    for up in range(0, px_cord[1]):
+        if pixel_map[px_cord[0], up] == (0, 0, 0):
+            total[0] += 1
+
+    for down in range(px_cord[1], height):
+        if pixel_map[px_cord[0], down] == (0, 0, 0):
+            total[1] += 1
+
+    for left in range(0, px_cord[0]):
+        if pixel_map[left, px_cord[1]] == (0, 0, 0):
+            total[2] += 1
+
+    for right in range(px_cord[0], width):
+        if pixel_map[right, px_cord[1]] == (0, 0, 0):
+            total[3] += 1
+
+    return total
+
+
+def raycastOutDiag(x, y):
+    total = [0,0,0,0] #[NW NE SW SE]
+    px_cord = [7*x+3, 7*y+3]
+    width, height = pipes.size
+    print(width, height)
+
+    if px_cord[0] > px_cord[1]:
+        dist_nw = px_cord[1]
+    else:
+        dist_nw = px_cord[0]
+    for nw in range(dist_nw):
+        if pixel_map[px_cord[0]-nw, px_cord[1]-nw] == (0, 0, 0):
+            total[0] += 1
+
+    if width-px_cord[0] > px_cord[1]:
+        dist_ne = px_cord[1]
+    else:
+        dist_ne = width-px_cord[0]
+    for ne in range(dist_ne):
+        if pixel_map[px_cord[0]+ne, px_cord[1]-ne] == (0, 0, 0):
+            total[1] += 1
+
+    if px_cord[0] > height-px_cord[1]:
+        dist_sw = height-px_cord[1]
+    else:
+        dist_sw = px_cord[0]
+    for sw in range(dist_sw):
+        if pixel_map[px_cord[0]-sw, px_cord[1]+sw] == (0, 0, 0):
+            total[2] += 1
+
+    if width-px_cord[0] > height-px_cord[1]:
+        dist_se = height-px_cord[1]
+    else:
+        dist_se = width-px_cord[0]
+    for se in range(dist_se):
+        if pixel_map[px_cord[0]+se, px_cord[1]+se] == (0, 0, 0):
+            total[3] += 1      
+
+    return total
+
+def isRaycastOdd(raycast):
+    isOdd = [False, False, False, False]
+
+    for i, cast in enumerate(raycast):
+        half = cast / 2
+        if (cast != 2) and (half % 2 != 0):
+            isOdd[i] = True
+
+    return all(isOdd)
+
+
+#raycast all non pipe cells
+for y, node_line in enumerate(nodes):
+    for x, cell in enumerate(node_line):
+        if not cell.visited:
+            raycast = raycastOutDiag(x, y)
+            print(f'Pixel: ({x},{y}) -> Raycast: {raycast}')
+            if isRaycastOdd(raycast):
+                print('Inside Cell Found')
+                cell.inside = True
+
+inside_count = 0
+
+#generate inside map
+for node_line in nodes:
+    for cell in node_line:
+        if cell.inside:
+            cell.drawBlank(my_canvas, cell.x, cell.y, 'yellow')
+            inside_count += 1
+
+#pixel_color = root.after(3000, lambda: get_color(screenshot, [0,0]))
+#root.after(3500, lambda: print(pixel_color))
+
+print(f'Part 2 Answer: {inside_count}')
 
 root.mainloop()
+
+
 
 
