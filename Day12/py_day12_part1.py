@@ -102,8 +102,4 @@ for line in converted_input: #('???.###', (1, 1, 3))
     left_init_input.append(final_string)
 
 
-    
-
-
-
 #permutation solving and counting
