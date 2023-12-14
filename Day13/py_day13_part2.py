@@ -102,4 +102,3 @@ for matrix in all_matricies:
 result = sum(smudge_hor_indexs) * 100 + sum(smudge_vert_indexs)
 
 print(f'Part 2 Answer: {result}')
-
