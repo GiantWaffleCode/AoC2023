@@ -1,7 +1,7 @@
 #   Advent of Code 2023
 #      GiantWaffle
 #   Challenge 15 of 25
-#      Part 1 of 2
+#      Part 2 of 2
 # -----------------------
 
 use_real_data = True
