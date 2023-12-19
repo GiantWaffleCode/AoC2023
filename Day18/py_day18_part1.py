@@ -1,11 +1,10 @@
 #   Advent of Code 2023
 #      GiantWaffle
-#   Challenge 17 of 25
+#   Challenge 18 of 25
 #      Part 1 of 2
 # -----------------------
 
 import copy
-import sys
 
 use_real_data = True
 data = []
@@ -168,6 +167,7 @@ def is_one(grid, row, col):
         return True
     else:
         return False
+
 
 def iterative_flood_fill(grid, row, col):
     '''
