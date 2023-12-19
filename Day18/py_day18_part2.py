@@ -1,13 +1,13 @@
 #   Advent of Code 2023
 #      GiantWaffle
-#   Challenge 17 of 25
-#      Part 1 of 2
+#   Challenge 18 of 25
+#      Part 2 of 2
 # -----------------------
 
 import copy
 import sys
 
-use_real_data = True
+use_real_data = False
 data = []
 
 with open('Day18\data_day18.txt') as f:
@@ -64,6 +64,32 @@ for line in test_input:
 
 # for line in instructions:
 #     print(line)
+    
+new_instructions = []
+
+for ins in instructions:
+    size = ins[2][:-1]
+    new_size = int(size, 16)
+    direction = int(ins[2][5:])
+    new_dir = ''
+    match direction:
+        case 0:
+            new_dir = 'R'
+        case 1:
+            new_dir = 'D'
+        case 2:
+            new_dir = 'L'
+        case 3:
+            new_dir = 'U'
+    new_ins = [new_dir, new_size]
+    #print(new_ins)
+    new_instructions.append(new_ins)
+
+# print(instructions)
+# print('')
+# print(new_instructions)
+
+instructions=new_instructions
 
 right_count = 0
 max_right = 0
